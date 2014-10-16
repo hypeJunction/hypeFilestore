@@ -5,6 +5,12 @@ namespace hypeJunction\Filestore;
 use ElggFile;
 use stdClass;
 
+/**
+ * Handles file uploads
+ *
+ * @package    hypeJunction
+ * @subpackage Filestore
+ */
 class UploadHandler {
 
 	/**
@@ -37,6 +43,7 @@ class UploadHandler {
 
 	/**
 	 * Normalize the $_FILES global when class is constructed
+	 * @return UploadHandler
 	 */
 	function __construct() {
 		if (!isset(self::$uploads)) {
@@ -47,10 +54,10 @@ class UploadHandler {
 	/**
 	 * Create new file entities
 	 *
-	 * @param string $input			Name of the file input
-	 * @param array $attributes		Key value pairs, such as subtype, owner_guid, metadata.
-	 * @param array $config			Additional config
-	 * @return array	An array of file entities created
+	 * @param string $input      Name of the file input
+	 * @param array  $attributes Key value pairs, such as subtype, owner_guid, metadata.
+	 * @param array  $config     Additional config
+	 * @return array An array of file entities created
 	 */
 	public function makeFiles($input, array $attributes = array(), array $config = array()) {
 		if (!isset(self::$files)) {
@@ -68,10 +75,10 @@ class UploadHandler {
 	/**
 	 * Static counterpart of makeFiles, but returns data for processed uploads
 	 *
-	 * @param string $input			Name of the file input
-	 * @param array $attributes		Key value pairs, such as subtype, owner_guid, metadata.
-	 * @param array $config			Additional config
-	 * @return array	An array of file entities created
+	 * @param string $input      Name of the file input
+	 * @param array  $attributes Key value pairs, such as subtype, owner_guid, metadata.
+	 * @param array  $config     Additional config
+	 * @return array An array of file entities created
 	 */
 	public static function handle($input, array $attributes = array(), array $config = array()) {
 
@@ -83,6 +90,7 @@ class UploadHandler {
 
 	/**
 	 * Convert file uploads into an object and get any errors
+	 *
 	 * @param array $_files Normalized $_FILES global
 	 * @return array
 	 */
@@ -115,7 +123,9 @@ class UploadHandler {
 
 	/**
 	 * Create new entities from file uploads
-	 * @param string $input  Name of the file input
+	 *
+	 * @param string $input Name of the file input
+	 * @return void
 	 */
 	protected static function entityFactory($input) {
 
@@ -177,8 +187,9 @@ class UploadHandler {
 
 	/**
 	 * Nomalizes $_FILES global
-	 * @param array $_files
-	 * @param boolean $top
+	 *
+	 * @param array   $_files An array of uploaded files
+	 * @param boolean $top    Is this the top level array
 	 * @return array
 	 */
 	protected static function normalize(array $_files = array(), $top = true) {
@@ -211,7 +222,8 @@ class UploadHandler {
 
 	/**
 	 * Get readable error status from $_FILES global
-	 * @param int $code
+	 *
+	 * @param int $code Error code
 	 * @return boolean
 	 */
 	protected static function getError($code) {
@@ -231,7 +243,8 @@ class UploadHandler {
 
 	/**
 	 * Detect mimetype of the uploaded file
-	 * @param object $file
+	 *
+	 * @param array $file Uploaded file
 	 * @return string
 	 */
 	protected static function detectMimeType($file) {
@@ -264,7 +277,8 @@ class UploadHandler {
 
 	/**
 	 * Get a simple type such as 'image'
-	 * @param string $mimetype
+	 *
+	 * @param string $mimetype Mimetype
 	 * @return string
 	 */
 	protected static function parseSimpleType($mimetype) {
