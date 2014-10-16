@@ -7,7 +7,7 @@ use ElggEntity;
 /**
  * Handles entity cover images
  *
- * @package    hypeJunction
+ * @package    HypeJunction
  * @subpackage Filestore
  */
 class CoverHandler extends IconHandler {

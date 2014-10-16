@@ -10,7 +10,7 @@ use WideImage\WideImage;
 /**
  * Handles entity icons
  *
- * @package    hypeJunction
+ * @package    HypeJunction
  * @subpackage Filestore
  */
 class IconHandler {
@@ -87,7 +87,8 @@ class IconHandler {
 				}
 
 				if (in_array($size, self::$croppable) || elgg_extract('croppable', $thumb, false)) {
-					$resized = $resized->resize(elgg_extract('w', $thumb, null), elgg_extract('h', $thumb, null), 'outside', 'any')->crop('center', 'center', elgg_extract('w', $thumb, null), elgg_extract('h', $thumb, null));
+					$resized = $resized->resize(elgg_extract('w', $thumb, null), elgg_extract('h', $thumb, null), 'outside', 'any');
+					$resized = $resized->crop('center', 'center', elgg_extract('w', $thumb, null), elgg_extract('h', $thumb, null));
 				} else if (!is_array($coords)) {
 					$resized = $resized->resize(elgg_extract('w', $thumb, null), elgg_extract('h', $thumb, null), 'inside', 'down');
 				} else {

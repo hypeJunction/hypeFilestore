@@ -8,7 +8,7 @@ use stdClass;
 /**
  * Handles file uploads
  *
- * @package    hypeJunction
+ * @package    HypeJunction
  * @subpackage Filestore
  */
 class UploadHandler {

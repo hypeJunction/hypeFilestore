@@ -3,7 +3,7 @@
 /**
  * File utilities
  *
- * @package hypeJunction
+ * @package    HypeJunction
  * @subpackage Wall
  *
  * @author Ismayil Khayredinov <ismayil.khayredinov@gmail.com>
