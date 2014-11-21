@@ -13,12 +13,7 @@ use stdClass;
  */
 class UploadHandler {
 
-	/**
-	 * Stores normalized values from the $_FILES global
-	 * @var array
-	 */
-	private static $uploads;
-
+	
 	/**
 	 * Stores file entities that were created from uploaded files
 	 * @var array
@@ -35,20 +30,39 @@ class UploadHandler {
 	/**
 	 * Config information to be used
 	 * @uses $config['icon_sizes']  Icon sizes to create after upload
-	 * @uses $config['filestore_prefix']		Prefix on the filestore. Default is 'file/'
+	 * @uses $config['filestore_prefix'] Prefix on the filestore. Default is 'file/'
 	 * @uses $config['icon_filestore_prefix'] Icon prefix on the filestore. Default is 'icons/'. Entity guid is appended automatically
 	 * @var array
 	 */
 	static $config;
 
 	/**
-	 * Normalize the $_FILES global when class is constructed
-	 * @return UploadHandler
+	 * Constructor
 	 */
-	function __construct() {
-		if (!isset(self::$uploads)) {
-			self::uploadFactory($_FILES);
-		}
+	protected function __construct() {}
+
+	public function setInputName($input) {
+		$this->input = $input;
+	}
+	
+	public function setEntityAttributes(array $attributes = array()) {
+		$this->attributes = $attributes;
+	}
+	
+	/**
+	 * Static counterpart of makeFiles, but returns data for processed uploads
+	 *
+	 * @param string $input      Name of the file input
+	 * @param array  $attributes Key value pairs, such as subtype, owner_guid, metadata.
+	 * @param array  $config     Additional config
+	 * @return array An array of file entities created
+	 */
+	public static function handle($input, array $attributes = array(), array $config = array()) {
+
+		$handler = new UploadHandler;
+		$handler->makeFiles($input, $attributes, $config);
+
+		return self::$uploads[$input];
 	}
 
 	/**
@@ -70,55 +84,6 @@ class UploadHandler {
 		}
 
 		return self::$files[$input];
-	}
-
-	/**
-	 * Static counterpart of makeFiles, but returns data for processed uploads
-	 *
-	 * @param string $input      Name of the file input
-	 * @param array  $attributes Key value pairs, such as subtype, owner_guid, metadata.
-	 * @param array  $config     Additional config
-	 * @return array An array of file entities created
-	 */
-	public static function handle($input, array $attributes = array(), array $config = array()) {
-
-		$handler = new UploadHandler;
-		$handler->makeFiles($input, $attributes, $config);
-
-		return self::$uploads[$input];
-	}
-
-	/**
-	 * Convert file uploads into an object and get any errors
-	 *
-	 * @param array $_files Normalized $_FILES global
-	 * @return array
-	 */
-	protected static function uploadFactory($_files = array()) {
-
-		$_files = self::normalize($_files);
-
-		foreach ($_files as $input => $uploads) {
-			foreach ($uploads as $upload) {
-				$object = new stdClass();
-				if (is_array($upload)) {
-					foreach ($upload as $key => $value) {
-						$object->$key = $value;
-					}
-
-					$object->error = self::getError($object->error);
-					if (!$object->error) {
-						$object->filesize = $upload['size'];
-						$object->mimetype = self::detectMimeType($upload);
-						$object->simpletype = self::parseSimpletype($object->mimetype);
-						$object->path = $upload['tmp_name'];
-					}
-				}
-				self::$uploads[$input][] = $object;
-			}
-		}
-
-		return self::$uploads;
 	}
 
 	/**
@@ -183,41 +148,6 @@ class UploadHandler {
 
 		self::$uploads[$input] = $handled_uploads;
 		self::$files[$input] = $entities;
-	}
-
-	/**
-	 * Nomalizes $_FILES global
-	 *
-	 * @param array   $_files An array of uploaded files
-	 * @param boolean $top    Is this the top level array
-	 * @return array
-	 */
-	protected static function normalize(array $_files = array(), $top = true) {
-
-		$files = array();
-		foreach ($_files as $name => $file) {
-			if ($top) {
-				$sub_name = $file['name'];
-			} else {
-				$sub_name = $name;
-			}
-			if (is_array($sub_name)) {
-				foreach (array_keys($sub_name) as $key) {
-					$files[$name][$key] = array(
-						'name' => $file['name'][$key],
-						'type' => $file['type'][$key],
-						'tmp_name' => $file['tmp_name'][$key],
-						'error' => $file['error'][$key],
-						'size' => $file['size'][$key],
-					);
-					$files[$name] = self::normalize($files[$name], FALSE);
-				}
-			} else {
-				$files[$name] = $file;
-			}
-		}
-
-		return $files;
 	}
 
 	/**
@@ -314,6 +244,19 @@ class UploadHandler {
 		}
 
 		return "general";
+	}
+
+	/**
+	 * Get human-readable size
+	 * 
+	 * @param int $decimals Decimals to include in the size string
+	 * @return string
+	 */
+	public function getHumanReadableSize($decimals = 2) {
+		$bytes = (int) $this->getSize();
+		$sz = 'BKMGTP';
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . $sz[$factor];
 	}
 
 }
