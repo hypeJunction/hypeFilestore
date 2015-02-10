@@ -222,7 +222,7 @@ class IconHandler {
 	 * @param string $size        Icon size
 	 * @return void
 	 */
-	public static function outputRawIcon($entity_guid, $size = null) {
+	public static function outputRawIcon($entity_guid = 0, $size = null) {
 
 		if (headers_sent()) {
 			exit;
@@ -231,14 +231,15 @@ class IconHandler {
 		$ha = access_get_show_hidden_status();
 		access_show_hidden_entities(true);
 
-		$entity_guid = get_input('guid');
+		$entity_guid = ($entity_guid) ?: get_input('guid');
 		$entity = get_entity($entity_guid);
 
 		if (!$entity) {
 			exit;
 		}
 
-		$size = strtolower(get_input('size', 'medium'));
+		$size = ($size) ?: get_input('size', 'medium');
+		$size = strtolower($size);
 
 		$filename = "icons/" . $entity->guid . $size . ".jpg";
 		$etag = md5($entity->icontime . $size);
