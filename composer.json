@@ -27,8 +27,9 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"hypeJunction\\": ["classes/hypeJunction/", "tests/phpunit/classes/hypeJunction"]
-		}
+			"hypeJunction\\": "classes/hypeJunction/"
+		},
+		"classmap": ["vendors/de77/"]
 	}
 }
 

@@ -6,4 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'WideImage\\vendor\\de77\\BMP' => $vendorDir . '/de77/BMP.php',
+    'WideImage\\vendor\\de77\\TGA' => $vendorDir . '/de77/TGA.php',
 );

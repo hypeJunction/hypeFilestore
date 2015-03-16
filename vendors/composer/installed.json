@@ -1,17 +1,48 @@
 [
     {
-        "name": "composer/installers",
-        "version": "v1.0.18",
-        "version_normalized": "1.0.18.0",
+        "name": "smottt/wideimage",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/composer/installers.git",
-            "reference": "74fb0a7a1a23696d9c8cc2fba5903f6711cdd067"
+            "url": "https://github.com/smottt/WideImage.git",
+            "reference": "658e6b8699255724589e8fb86959306ec64af318"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/74fb0a7a1a23696d9c8cc2fba5903f6711cdd067",
-            "reference": "74fb0a7a1a23696d9c8cc2fba5903f6711cdd067",
+            "url": "https://api.github.com/repos/smottt/WideImage/zipball/ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
+            "reference": "658e6b8699255724589e8fb86959306ec64af318",
+            "shasum": ""
+        },
+        "time": "2014-10-05 14:59:53",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "WideImage": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-2.0",
+            "LGPL-2.1"
+        ],
+        "description": "An open-source PHP library for image manipulation. (With namespaces, PHP 5.3+)",
+        "homepage": "http://wideimage.sourceforge.net"
+    },
+    {
+        "name": "composer/installers",
+        "version": "v1.0.20",
+        "version_normalized": "1.0.20.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/composer/installers.git",
+            "reference": "1bff8aa77a18f3616f468ed8000cf86a5725bac3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/composer/installers/zipball/1bff8aa77a18f3616f468ed8000cf86a5725bac3",
+            "reference": "1bff8aa77a18f3616f468ed8000cf86a5725bac3",
             "shasum": ""
         },
         "replace": {
@@ -22,7 +53,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2014-08-18 20:00:12",
+        "time": "2015-01-11 03:51:11",
         "type": "composer-installer",
         "extra": {
             "class": "Composer\\Installers\\Installer",
@@ -55,6 +86,8 @@
             "Hurad",
             "MODX Evo",
             "OXID",
+            "SMF",
+            "Thelia",
             "WolfCMS",
             "agl",
             "annotatecms",
@@ -64,9 +97,11 @@
             "codeigniter",
             "concrete5",
             "croogo",
+            "dokuwiki",
             "drupal",
             "elgg",
             "fuelphp",
+            "grav",
             "installer",
             "joomla",
             "kohana",
@@ -90,36 +125,5 @@
             "zend",
             "zikula"
         ]
-    },
-    {
-        "name": "smottt/wideimage",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/smottt/WideImage.git",
-            "reference": "658e6b8699255724589e8fb86959306ec64af318"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/smottt/WideImage/zipball/ee2e71be7e3f298248bd6d0f4a157bb42f432ba7",
-            "reference": "658e6b8699255724589e8fb86959306ec64af318",
-            "shasum": ""
-        },
-        "time": "2014-10-05 14:59:53",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "WideImage": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "GPL-2.0",
-            "LGPL-2.1"
-        ],
-        "description": "An open-source PHP library for image manipulation. (With namespaces, PHP 5.3+)",
-        "homepage": "http://wideimage.sourceforge.net"
     }
 ]

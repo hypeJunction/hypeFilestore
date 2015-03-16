@@ -3,48 +3,48 @@ php:
  - 5.3
  - 5.4
  - 5.5
- - 5.6
- 
+
 branches:
   - master
 
 matrix:
   include:
-    - php: 5.6
+    - php: 5.3
       env: VARIA=true
       before_script:
-       - cd ../../
+       - git clone https://github.com/Elgg/Elgg.git ../Elgg && cd ../Elgg
+       - git checkout 1.9
+       - mv ../hypeFilestore mod/hypeFilestore
        - node -v
        - pear install pear/PHP_CodeSniffer
+       - mkdir ../elgg-coding-standards
+       - git clone https://github.com/Elgg/elgg-coding-standards.git ../elgg-coding-standards/
        - phpenv rehash
-       - git clone -b 1.9 https://github.com/Elgg/Elgg.git Elgg
-       - mv hypeJunction/hypeFilestore Elgg/mod/hypeFilestore
-       - cd Elgg/mod/hypeFilestore && composer update && cd ../../../
-      script:
-       - phpcs --standard=Elgg/mod/hypeFilestore/vendors/elgg/sniffs/elgg.xml --warning-severity=0 --ignore=*Elgg/mod/hypeFilestore/tests/*,*Elgg/mod/hypeFilestore/vendors/* Elgg/mod/hypeFilestore/
-       - phpunit --configuration=Elgg/mod/hypeFilestore/phpunit.xml --coverage-clover=Elgg/mod/hypeFilestore/coverage.clover
-       - composer validate --verbose Elgg/mod/hypeFilestore/composer.json
-      after_script:
-       - cd Elgg/mod/hypeFilestore
+       - curl -sS https://getcomposer.org/installer | php
        - wget https://scrutinizer-ci.com/ocular.phar
+      script:
+       - phpcs --standard=../elgg-coding-standards/elgg.xml --warning-severity=0 --ignore=*../Elgg/mod/hypeFilestore/tests/*,*./Elgg/mod/hypeFilestore/vendors/* ../Elgg/mod/hypeFilestore/
+       - phpunit --coverage-clover=coverage.clover
+       - php composer.phar validate --verbose ../Elgg/mod/hypeFilestore/composer.json
+      after_script:
        - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
 
 services:
  - mysql
 
 before_script:
- - cd ../../
- - git clone -b 1.9 https://github.com/Elgg/Elgg.git Elgg
- - mv hypeJunction/hypeFilestore Elgg/mod/hypeFilestore
+ - git clone https://github.com/Elgg/Elgg.git ../Elgg && cd ../Elgg
+ - git checkout 1.9
+ - mv ../hypeFilestore mod/hypeFilestore
  - mysql -e 'create database elgg;'
  - echo "USE mysql; UPDATE user SET password=PASSWORD('password') WHERE user='root'; FLUSH PRIVILEGES;" | mysql -u root
  - mkdir "${HOME}/elgg_data/"
- - php -f Elgg/install/cli/travis_installer.php
- - php -f Elgg/mod/hypeFilestore/.travis/activate.php
+ - php -f ../Elgg/install/cli/travis_installer.php
+ - php -f ../Elgg/mod/hypeFilestore/.travis/activate.php
 
 script:
- - php -f Elgg/engine/tests/suite.php
- - phpunit --configuration=Elgg/mod/hypeFilestore/phpunit.xml
+ - phpunit
+ - php -f ../Elgg/engine/tests/suite.php
 
 notifications:
   email: false
