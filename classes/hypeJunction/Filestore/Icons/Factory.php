@@ -8,6 +8,7 @@ use ElggGroup;
 use ElggUser;
 use Exception;
 use hypeJunction\Filestore\Config\Config;
+use hypeJunction\Filestore\Handlers\Image;
 
 class Factory {
 
@@ -96,7 +97,7 @@ class Factory {
 					$icons_meta[$metadata_name] = $icon->getFilename();
 				}
 			} catch (Exception $ex) {
-				elgg_log($ex->getMesssage(), 'ERROR');
+				elgg_log($ex->getMessage(), 'ERROR');
 				$error = true;
 			}
 		}

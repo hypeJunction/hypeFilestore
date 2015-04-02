@@ -31,11 +31,11 @@ class Image {
 	 * @return Image
 	 */
 	public function resize($props = array(), $coords = null) {
-
+		
 		$croppable = elgg_extract('croppable', $props, false);
 
-		$width = elgg_extract('width', $props);
-		$height = elgg_extract('height', $props);
+		$width = elgg_extract('w', $props);
+		$height = elgg_extract('h', $props);
 
 		if (is_array($coords) && $croppable) {
 			$master_width = elgg_extract('master_width', $coords, self::MASTER);
@@ -67,7 +67,7 @@ class Image {
 	 * @return Image
 	 */
 	public function save($path) {
-		$this->resized->saveToFile($path);
+		$this->source->saveToFile($path);
 		return $this;
 	}
 

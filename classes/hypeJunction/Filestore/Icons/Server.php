@@ -42,11 +42,11 @@ class Server {
 			exit;
 		}
 
-		$etag = $this->icontime . $this->guid;
-		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
-			header("HTTP/1.1 304 Not Modified");
-			exit;
-		}
+//		$etag = $this->icontime . $this->guid;
+//		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
+//			header("HTTP/1.1 304 Not Modified");
+//			exit;
+//		}
 
 		$this->openDbLink();
 		$values = $this->getDatalistValue(array('dataroot', '__site_secret__'));
@@ -65,7 +65,6 @@ class Server {
 			header("HTTP/1.1 403 Forbidden");
 			exit;
 		}
-
 
 		$locator = new \Elgg\EntityDirLocator($this->dir_guid);
 		$filename = $data_root . $locator->getPath() . $this->path;
@@ -94,7 +93,7 @@ class Server {
 		header("Pragma: public");
 		header("Cache-Control: public");
 		header("Content-Length: $filesize");
-		header("ETag: \"$etag\"");
+		//header("ETag: \"$etag\"");
 		readfile($filename);
 		exit;
 	}
@@ -104,10 +103,10 @@ class Server {
 	 * @return array
 	 */
 	protected function getDbConfig() {
-		if ($this->config->isDatabaseSplit()) {
-			return $this->config->getConnectionConfig(\Elgg\Database\Config::READ);
+		if ($this->dbConfig->isDatabaseSplit()) {
+			return $this->dbConfig->getConnectionConfig(\Elgg\Database\Config::READ);
 		}
-		return $this->config->getConnectionConfig(\Elgg\Database\Config::READ_WRITE);
+		return $this->dbConfig->getConnectionConfig(\Elgg\Database\Config::READ_WRITE);
 	}
 
 	/**
@@ -162,7 +161,7 @@ class Server {
 				FROM {$this->dbPrefix}datalists
 				WHERE name IN ({$names_in})";
 
-		$result = mysql_query($q, $mysql_dblink);
+		$result = mysql_query($q, $this->dbLink);
 		if ($result) {
 			$row = mysql_fetch_object($result);
 			while ($row) {
@@ -183,7 +182,7 @@ class Server {
 	 */
 	protected function get($name, $default = null) {
 		if (isset($_GET[$name])) {
-			return $_GET['name'];
+			return $_GET[$name];
 		}
 		return $default;
 	}
