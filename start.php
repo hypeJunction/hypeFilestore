@@ -1,59 +1,38 @@
 <?php
 
 /**
- * File utilities
- *
- * @package    HypeJunction
- * @subpackage Wall
+ * File and image handling utilities
  *
  * @author Ismayil Khayredinov <ismayil.khayredinov@gmail.com>
+ * @copyright Copyright (c) 2011-2015, Ismayil Khayredinov
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2
  */
 
-namespace hypeJunction\Filestore;
+require_once __DIR__ . '/vendor/autoload.php';
 
-const PLUGIN_ID = 'hypeFilestore';
+elgg_register_event_handler('init', 'system', function() {
 
-require_once __DIR__ . '/vendors/autoload.php';
-
-elgg_register_event_handler('init', 'system', __NAMESPACE__ . '\\init');
-
-/**
- * Initialize the plugin
- *
- * @return void
- */
-function init() {
+	hypeFilestore()->hooks->init();
 
 	/**
 	 * JS/CSS
 	 */
-	elgg_register_css('cropper', '/mod/' . PLUGIN_ID . '/vendors/cropper/dist/cropper.min.css');
+	elgg_register_css('cropper', '/mod/hypeFilestore/vendors/cropper/dist/cropper.min.css');
 	elgg_define_js('cropper', array(
-		'src' => '/mod/' . PLUGIN_ID . '/vendors/cropper/dist/cropper.min.js',
+		'src' => '/mod/hypeFilestore/vendors/cropper/dist/cropper.min.js',
 		'deps' => array('jquery')
 	));
-
-	/**
-	 * Tests
-	 */
-	elgg_register_plugin_hook_handler('unit_test', 'system', __NAMESPACE__ . '\\unit_test');
-}
+});
 
 /**
- * Run unit tests
- *
- * @param string $hook   Equals 'unit_test'
- * @param string $type   Equals 'system'
- * @param array  $value  An array of unit test locations
- * @param array  $params Additional params
- * @return array Updated array of unit test locations
+ * Plugin DI Container
+ * @staticvar \hypeJunction\Filestore\Di\PluginContainer $provider
+ * @return \hypeJunction\Filestore\Di\PluginContainer
  */
-function unit_test($hook, $type, $value, $params) {
-
-	$path = elgg_get_plugins_path();
-	//$value[] = $path . PLUGIN_ID . '/tests/UploadHandlerTest.php';
-	//$value[] = $path . PLUGIN_ID . '/tests/IconHandlerTest.php';
-	//$value[] = $path . PLUGIN_ID . '/tests/CoverHandlerTest.php';
-
-	return $value;
+function hypeFilestore() {
+	static $provider;
+	if (null === $provider) {
+		$provider = \hypeJunction\Filestore\Di\PluginContainer::create();
+	}
+	return $provider;
 }
