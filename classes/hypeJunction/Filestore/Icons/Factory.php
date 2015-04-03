@@ -222,9 +222,11 @@ class Factory {
 		$file = new ElggFile();
 		$file->owner_guid = ($entity instanceof ElggUser) ? $entity->guid : $entity->owner_guid;
 		$file->setFilename("{$dir}/{$filename}");
+		if (!file_exists($file->getFilenameOnFilestore())) {
+			$file->open('write');
+			$file->close();
+		}
 		$file->mimetype = $file->detectMimeType();
-		$file->open('write');
-		$file->close();
 
 		return $file;
 	}
