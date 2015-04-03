@@ -42,11 +42,11 @@ class Server {
 			exit;
 		}
 
-//		$etag = $this->icontime . $this->guid;
-//		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
-//			header("HTTP/1.1 304 Not Modified");
-//			exit;
-//		}
+		$etag = $this->icontime . $this->guid;
+		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
+			header("HTTP/1.1 304 Not Modified");
+			exit;
+		}
 
 		$this->openDbLink();
 		$values = $this->getDatalistValue(array('dataroot', '__site_secret__'));
@@ -93,7 +93,7 @@ class Server {
 		header("Pragma: public");
 		header("Cache-Control: public");
 		header("Content-Length: $filesize");
-		//header("ETag: \"$etag\"");
+		header("ETag: \"$etag\"");
 		readfile($filename);
 		exit;
 	}
