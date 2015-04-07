@@ -62,7 +62,7 @@ class Uploader {
 			if ($upload->file instanceof ElggEntity && $upload->simpletype == 'image') {
 				$this->iconFactory->create($upload->file, null, $options);
 			}
-			
+
 			$result[] = $upload;
 		}
 

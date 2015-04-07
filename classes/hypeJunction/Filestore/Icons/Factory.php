@@ -92,8 +92,8 @@ class Factory {
 
 				$icons[$size] = $icon;
 
-				if (isset($thumb['metadata_name'])) {
-					$metadata_name = $thumb['metadata_name'];
+				if (isset($props['metadata_name'])) {
+					$metadata_name = $props['metadata_name'];
 					$icons_meta[$metadata_name] = $icon->getFilename();
 				}
 			} catch (Exception $ex) {
