@@ -6,7 +6,8 @@ use ElggEntity;
 use ElggFile;
 use hypeJunction\Filestore\Config\Config;
 use hypeJunction\Filestore\Handlers\Uploader\Upload;
-use SebastianBergmann\Comparator\Factory;
+use hypeJunction\Filestore\Icons\Factory;
+
 
 class Uploader {
 
@@ -18,7 +19,7 @@ class Uploader {
 
 	/**
 	 * Icons factory
-	 * @var hypeJunction\Filestore\Icons\Factory
+	 * @var Factory
 	 */
 	private $iconFactory;
 
@@ -26,7 +27,7 @@ class Uploader {
 	 * Constructor
 	 *
 	 * @param Config $config      Config
-	 * @param hypeJunction\Filestore\Icons\Factory $iconFactory Icon Factory
+	 * @param Factory $iconFactory Icon Factory
 	 */
 	public function __construct(Config $config, Factory $iconFactory) {
 		$this->config = $config;
