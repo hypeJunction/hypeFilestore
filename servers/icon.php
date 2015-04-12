@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
+require_once dirname(dirname(__FILE__)) . '/lib/autoloader.php';
 
 $base_dir = dirname(dirname(dirname(dirname(__FILE__))));
 

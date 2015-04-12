@@ -1,6 +1,7 @@
 <?php
 
-require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
+elgg_register_classes(dirname(dirname(__FILE__)) . '/classes/');
+elgg_register_classes(dirname(dirname(__FILE__)) . '/vendors/WideImage/lib/');
 
 /**
  * Plugin DI Container
