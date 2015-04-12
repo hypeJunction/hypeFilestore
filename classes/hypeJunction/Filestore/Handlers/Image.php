@@ -63,11 +63,31 @@ class Image {
 	/**
 	 * Saves resized image to a file
 	 *
-	 * @param string $path File location
+	 * @param string  $path    File location
+	 * @param quality $quality Quality options
 	 * @return Image
 	 */
-	public function save($path) {
-		$this->source->saveToFile($path);
+	public function save($path, $quality = array()) {
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+
+		$jpeg_quality = elgg_extract('jpeg_quality', $quality);
+		$png_quality = elgg_extract('png_quality', $quality);
+		$png_filter = elgg_extract('png_filter', $quality);
+		
+		switch ($ext) {
+			default :
+				$this->source->saveToFile($path, $jpeg_quality);
+				break;
+
+			case 'gif';
+				$this->source->saveToFile($path);
+				break;
+
+			case 'png' :
+				$this->source->saveToFile($path, $png_quality, $png_filter);
+				break;
+		}
+		
 		return $this;
 	}
 

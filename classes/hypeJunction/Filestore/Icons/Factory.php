@@ -88,7 +88,7 @@ class Factory {
 
 				$image = new Image($source);
 				$image->resize($props, $coords);
-				$image->save($icon->getFilenameOnFilestore());
+				$image->save($icon->getFilenameOnFilestore(), $this->config->getIconCompressionOpts());
 
 				$icons[$size] = $icon;
 
@@ -111,7 +111,9 @@ class Factory {
 
 		if (!$entity instanceof ElggFile) {
 			// store the original icon source file
-			move_uploaded_file($source, $this->getIconFile($entity)->getFilenameOnFilestore());
+			$src = $this->getIconFile($entity);
+			$srcimg = new Image($source);
+			$srcimg->save($src->getFilenameOnFilestore(), $this->config->getSrcCompressionOpts());
 		}
 
 		if (is_array($coords)) {

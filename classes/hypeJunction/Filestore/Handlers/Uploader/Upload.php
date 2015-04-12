@@ -4,6 +4,7 @@ namespace hypeJunction\Filestore\Handlers\Uploader;
 
 use ElggFile;
 use Exception;
+use hypeJunction\Filestore\Handlers\Image;
 
 /**
  * @property string   $name       Upload name
@@ -88,7 +89,12 @@ class Upload {
 			$filehandler->open("write");
 			$filehandler->close();
 
-			move_uploaded_file($this->tmp_name, $filehandler->getFilenameOnFilestore());
+			if ($this->simpletype == 'image') {
+				$img = new Image($this->tmp_name);
+				$img->save($filehandler->getFilenameOnFilestore(), hypeFilestore()->config->getSrcCompressionOpts());
+			} else {
+				move_uploaded_file($this->tmp_name, $filehandler->getFilenameOnFilestore());
+			}
 
 			if ($filehandler->save()) {
 				$this->guid = $filehandler->getGUID();

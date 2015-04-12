@@ -141,4 +141,28 @@ class Config {
 		return elgg_get_config('icon_sizes');
 	}
 
+	/**
+	 * Returns additional quality options for icon compression
+	 * @return array
+	 */
+	public function getIconCompressionOpts() {
+		return array(
+			'jpeg_quality' => $this->get('icon_jpeg_quality', 100),
+			'png_compression' => $this->get('icon_png_compression', 0),
+			'png_filter' => $this->get('icon_png_filter', PNG_NO_FILTER),
+		);
+	}
+
+	/**
+	 * Returns additional quality options for source file compression
+	 * @return array
+	 */
+	public function getSrcCompressionOpts() {
+		return array(
+			'jpeg_quality' => $this->get('jpeg_quality', 100),
+			'png_compression' => $this->get('png_compression', 0),
+			'png_filter' => $this->get('png_filter', PNG_NO_FILTER),
+		);
+	}
+
 }
