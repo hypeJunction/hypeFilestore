@@ -31,7 +31,7 @@ class Image {
 	 * @return Image
 	 */
 	public function resize($props = array(), $coords = null) {
-		
+
 		$croppable = elgg_extract('croppable', $props, false);
 
 		$width = elgg_extract('w', $props);

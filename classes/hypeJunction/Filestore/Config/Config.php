@@ -109,21 +109,21 @@ class Config {
 	 */
 	public function getFileIconSizes() {
 		return array(
-			'thumb' => array(
+			'small' => array(
 				'w' => 60,
 				'h' => 60,
 				'square' => true,
 				'upscale' => true,
 				'metadata_name' => 'thumbnail',
 			),
-			'smallthumb' => array(
+			'medium' => array(
 				'w' => 153,
 				'h' => 153,
 				'square' => true,
 				'upscale' => true,
 				'metadata_name' => 'smallthumb',
 			),
-			'largethumb' => array(
+			'large' => array(
 				'w' => 600,
 				'h' => 600,
 				'square' => true,
