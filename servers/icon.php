@@ -3,9 +3,8 @@
 $base_dir = dirname(dirname(dirname(dirname(__FILE__))));
 
 require_once $base_dir . '/engine/settings.php';
-require_once $base_dir . '/engine/lib/autoloader.php';
-
-require_once dirname(dirname(__FILE__)) . '/lib/autoloader.php';
+require_once $base_dir . '/vendor/autoload.php';
+require_once dirname(dirname(__FILE__)) . '/classes/hypeJunction/Filestore/Icons/Server.php';
 
 global $CONFIG;
 $conf = new \Elgg\Database\Config($CONFIG);
