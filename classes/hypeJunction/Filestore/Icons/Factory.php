@@ -247,9 +247,8 @@ class Factory {
 		$key = get_site_secret();
 		$guid = $entity->guid;
 		$path = $icon->getFilename();
-		$cookie = $_COOKIE['Elgg'];
 
-		$hmac = hash_hmac('sha256', $guid . $path . $cookie, $key);
+		$hmac = hash_hmac('sha256', $guid . $path, $key);
 
 		$url = elgg_http_add_url_query_elements('mod/hypeFilestore/servers/icon.php', array(
 			'guid' => $guid,

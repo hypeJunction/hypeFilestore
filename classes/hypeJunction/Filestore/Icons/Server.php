@@ -60,7 +60,7 @@ class Server {
 		$data_root = $values['dataroot'];
 		$key = $values['__site_secret__'];
 
-		$hmac = hash_hmac('sha256', $this->guid . $this->path . $_COOKIE['Elgg'], $key);
+		$hmac = hash_hmac('sha256', $this->guid . $this->path, $key);
 		if ($this->hmac !== $hmac) {
 			header("HTTP/1.1 403 Forbidden");
 			exit;
