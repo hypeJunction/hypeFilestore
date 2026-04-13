@@ -1,0 +1,1 @@
+# hypefilestore is composer-only, no manifest.xml, no plugin deps.

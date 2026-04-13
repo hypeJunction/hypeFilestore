@@ -6,3 +6,7 @@ robots.txt
 composer.lock
 
 /vendor/docker/.env
+tests/playwright/node_modules/
+tests/playwright/test-results/
+tests/playwright/playwright-report/
+tests/.phpunit.result.cache
