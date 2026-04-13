@@ -1,4 +1,4 @@
-# hypeFilestore — Architecture (Elgg 3.x)
+# hypeFilestore — Architecture (Elgg 4.x)
 
 File and image handling utilities for Elgg. Provides icon generation, file uploads, and a fast HMAC-signed icon serving path.
 

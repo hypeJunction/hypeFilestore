@@ -1,5 +1,30 @@
 # Changelog
 
+## [Unreleased] — Elgg 4.x migration
+
+### Migrated to Elgg 4.x
+
+- Bumped composer constraints: `elgg/elgg ^4.0`, `php >=7.4`, `composer/installers ^2.0`
+- Added `config.allow-plugins.composer/installers` (required by composer 2.2+)
+- Replaced `extra.installer-name` with `extra.elgg-plugin.id` (lowercase canonical)
+- **Deleted `manifest.xml`** — composer.json is the sole metadata source from 4.x onward
+- **Deleted `start.php`** — Iron Law: 4.x rejects plugins with any start.php file
+- **Created `elgg-plugin.php`** with declarative `plugin`, `bootstrap`, and `hooks` config
+- **Created `Bootstrap` class** extending `\Elgg\DefaultPluginBootstrap`
+- **Moved `hypeFilestore()` factory** from `lib/autoloader.php` to `lib/functions.php` (loaded via `require_once` at top of `elgg-plugin.php`)
+- **Converted `PluginHooks::handleEntityIconUrls` to `\Elgg\Hook` signature** (single-arg, static method); the legacy 4-arg form is gone
+- **Rewrote `PluginContainer`** to NOT extend `\Elgg\Di\DiContainer` — that class became abstract in 4.x and removed `setFactory()`. Now uses a plain class with `__get` magic accessor for lazy service construction. Outward interface preserved.
+- **Lowercased `Config::PLUGIN_ID`** to `'hypefilestore'` (Iron Law 6); factory falls back to camelCase for 3.x compat
+- **Removed `elgg_register_css()` / `elgg_register_external_view()` from Bootstrap::init()** — both removed in 4.x
+- **Deleted `vendors/cropper/examples/`** — third-party demo files contained an XSS pattern flagged by the security sweep; demo dir is not used by the plugin
+- Adapted tests/bootstrap.php to detect 4.x function location
+
+### Deferred to 4→5 or later
+
+- `Icons/Server.php` still uses removed `mysql_*` extension (dead code path, but should be rewritten)
+- `move_uploaded_file` filename sanitization audit
+- md5 ETags in Icons/Factory.php (cosmetic, not a security risk for ETags)
+
 ## [Unreleased] — Elgg 3.x migration
 
 ### Migrated to Elgg 3.x
