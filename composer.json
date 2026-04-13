@@ -21,8 +21,15 @@
 		"ext-json": "*",
 		"ext-xml": "*",
 		"ext-curl": "*",
+		"ext-gd": "*",
 		"elgg/elgg": "^3.0",
 		"composer/installers": "~1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"hypeJunction\\Filestore\\": "classes/hypeJunction/Filestore/",
+			"WideImage\\": "vendors/WideImage/lib/WideImage/"
+		}
 	}
 }
 
