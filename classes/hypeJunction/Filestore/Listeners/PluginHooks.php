@@ -35,38 +35,50 @@ class PluginHooks {
 	}
 
 	/**
-	 * Perform tasks on system init
+	 * Perform tasks on system init.
+	 *
+	 * Retained for backwards compatibility with any caller that still invokes
+	 * hypeFilestore()->hooks->init() directly (e.g., tests or downstream
+	 * plugins). The entity:icon:url hook itself is now declared in
+	 * elgg-plugin.php and does NOT need to be registered here.
+	 *
 	 * @return void
 	 */
 	public function init() {
-		elgg_register_plugin_hook_handler('entity:icon:url', 'all', array($this, 'handleEntityIconUrls'));
+		// Hook registration moved to elgg-plugin.php 'hooks' key (Elgg 4.x
+		// declarative config). This method intentionally no-ops to preserve
+		// the call surface.
 	}
 
 	/**
-	 * Filter icon URLs to route requests via a faster handler
+	 * Filter icon URLs to route requests via a faster handler.
 	 *
-	 * @param string $hook   "entity:icon:url"
-	 * @param string $type   "all"
-	 * @param string $return URL
-	 * @param array  $params Hook params
-	 * @return string
+	 * Elgg 4.x \Elgg\Hook signature — replaces the legacy 4-arg
+	 * ($hook, $type, $return, $params) form.
+	 *
+	 * @param \Elgg\Hook $hook
+	 * @return string|null
 	 */
-	function handleEntityIconUrls($hook, $type, $return, $params) {
-
-		if (!is_null($return)) {
+	public static function handleEntityIconUrls(\Elgg\Hook $hook) {
+		$existing = $hook->getValue();
+		if (!is_null($existing)) {
 			// another plugin has already replaced the icon URL
-			return $return;
+			return $existing;
 		}
 
-		$entity = elgg_extract('entity', $params);
-		$size = elgg_extract('size', $params, 'medium');
+		$entity = $hook->getEntityParam();
+		if (!$entity) {
+			return $existing;
+		}
+		$size = $hook->getParam('size', 'medium');
 
-		if (!$entity->icontime || !array_key_exists($size, $this->iconFactory->getSizes($entity))) {
+		$factory = hypeFilestore()->iconFactory;
+		if (!$entity->icontime || !array_key_exists($size, $factory->getSizes($entity))) {
 			// icon has not yet been created or the icon size is unknown
-			return $return;
+			return $existing;
 		}
 
-		return $this->iconFactory->getURL($entity, $size);
+		return $factory->getURL($entity, $size);
 	}
 
 }
