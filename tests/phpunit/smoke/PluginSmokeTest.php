@@ -25,7 +25,7 @@ class PluginSmokeTest extends TestCase
 {
     public function testPluginIsActive(): void
     {
-        $plugin = elgg_get_plugin_from_id('hypeFilestore');
+        $plugin = elgg_get_plugin_from_id('hypefilestore') ?: elgg_get_plugin_from_id('hypeFilestore');
         $this->assertNotNull($plugin, 'hypeFilestore plugin should be registered');
         // Elgg 2.x isActive() returns an ElggRelationship object (truthy) when active, false otherwise.
         $this->assertNotFalse($plugin->isActive(), 'hypeFilestore should be active');
