@@ -29,9 +29,11 @@ class Bootstrap extends DefaultPluginBootstrap
 
     public function init(): void
     {
-        // Register cropper assets for consumer plugins.
-        \elgg_register_css('cropper', '/mod/hypefilestore/vendors/cropper/dist/cropper.min.css');
-        \elgg_register_external_view('js/cropper');
+        // No-op. elgg_register_css() and elgg_register_external_view() were
+        // removed in Elgg 4.x — assets at views/default/css/ and
+        // views/default/js/ auto-discover via simplecache. Consumer plugins
+        // (hypeAttachments, hypeWall) that need cropper assets reference
+        // them directly via their own view files.
     }
 
     public function ready(): void

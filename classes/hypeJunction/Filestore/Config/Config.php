@@ -9,7 +9,7 @@ use ElggPlugin;
  */
 class Config {
 
-	const PLUGIN_ID = 'hypeFilestore';
+	const PLUGIN_ID = 'hypefilestore';
 	const SIZE_TOPBAR = 'topbar';
 	const SIZE_TINY = 'tiny';
 	const SIZE_SMALL = 'small';
@@ -39,7 +39,10 @@ class Config {
 	 * @return Config
 	 */
 	public static function factory() {
-		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID);
+		// Try lowercase canonical (Elgg 4.x Iron Law 6) then camelCase fallback
+		// for transitional 3.x environments where the dir is still mixed-case.
+		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID)
+			?: elgg_get_plugin_from_id('hypeFilestore');
 		return new Config($plugin);
 	}
 
