@@ -45,32 +45,27 @@ class PluginHooks {
 	 * @return void
 	 */
 	public function init() {
-		// Hook registration moved to elgg-plugin.php 'hooks' key (Elgg 4.x
-		// declarative config). This method intentionally no-ops to preserve
-		// the call surface.
+		// Event registration is in elgg-plugin.php 'events' key. No-op here for call-surface compat.
 	}
 
 	/**
 	 * Filter icon URLs to route requests via a faster handler.
 	 *
-	 * Elgg 4.x \Elgg\Hook signature — replaces the legacy 4-arg
-	 * ($hook, $type, $return, $params) form.
-	 *
-	 * @param \Elgg\Hook $hook
+	 * @param \Elgg\Event $event
 	 * @return string|null
 	 */
-	public static function handleEntityIconUrls(\Elgg\Hook $hook) {
-		$existing = $hook->getValue();
+	public static function handleEntityIconUrls(\Elgg\Event $event) {
+		$existing = $event->getValue();
 		if (!is_null($existing)) {
 			// another plugin has already replaced the icon URL
 			return $existing;
 		}
 
-		$entity = $hook->getEntityParam();
+		$entity = $event->getParam('entity');
 		if (!$entity) {
 			return $existing;
 		}
-		$size = $hook->getParam('size', 'medium');
+		$size = $event->getParam('size', 'medium');
 
 		$factory = hypeFilestore()->iconFactory;
 		if (!$entity->icontime || !array_key_exists($size, $factory->getSizes($entity))) {

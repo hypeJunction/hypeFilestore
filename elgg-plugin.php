@@ -8,7 +8,7 @@ return [
         'activate_on_install' => false,
     ],
     'bootstrap' => \hypeJunction\Filestore\Bootstrap::class,
-    'hooks' => [
+    'events' => [
         'entity:icon:url' => [
             'all' => [
                 \hypeJunction\Filestore\Listeners\PluginHooks::class . '::handleEntityIconUrls' => [],
