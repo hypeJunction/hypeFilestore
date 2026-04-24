@@ -1,5 +1,22 @@
 # Changelog
 
+## [Unreleased] — Elgg 5.x migration
+
+### Migrated to Elgg 5.x
+
+- Bumped composer constraints: `elgg/elgg ^5.0`, `php >=8.2`
+- **`'hooks'` key renamed to `'events'`** in `elgg-plugin.php` (hooks and events unified in 5.x)
+- **`\Elgg\Hook` → `\Elgg\Event`** in `PluginHooks::handleEntityIconUrls` handler signature; `getEntityParam()` → `getParam('entity')`
+- **`elgg_trigger_plugin_hook()` → `elgg_trigger_event_results()`** in `CoverHandler::getIconSizes()` and `Icons/Factory` (`getSizes`, `getIconDirectory`, `getIconFilename`)
+- Updated Docker stack: PHP 7.4→8.2, MySQL 5.7→8.0, `elgg/elgg ^5.1`, `phpunit ^10.0`
+- Adapted Playwright CSS smoke test: Elgg 5.x simplecache uses `cache/<timestamp>/` not `cache/0/`
+
+### Deferred (known issues not introduced by this migration)
+
+- `Icons/Server.php` still uses removed `mysql_*` extension (dead code, pre-existing)
+- `move_uploaded_file` filename sanitization audit (pre-existing)
+- md5 ETags in `Icons/Factory.php` (cosmetic, pre-existing)
+
 ## [Unreleased] — Elgg 4.x migration
 
 ### Migrated to Elgg 4.x

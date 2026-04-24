@@ -1,4 +1,4 @@
-# hypeFilestore — Architecture (Elgg 4.x)
+# hypeFilestore — Architecture (Elgg 5.x)
 
 File and image handling utilities for Elgg. Provides icon generation, file uploads, and a fast HMAC-signed icon serving path.
 
@@ -36,7 +36,7 @@ hypefilestore/
 └── vendors/WideImage/                     Vendored PSR-4 image library
 ```
 
-## Hooks registered
+## Events registered
 
 | Event | Type | Handler |
 |-------|------|---------|
@@ -52,7 +52,7 @@ None. The fast icon serving endpoint at `servers/icon.php` is reached via direct
 
 ## Services (DI container)
 
-`hypeFilestore()` returns a singleton `PluginContainer` (extends `\Elgg\Di\DiContainer`):
+`hypeFilestore()` returns a singleton `PluginContainer` (plain class with `__get` magic; does NOT extend `\Elgg\Di\DiContainer`):
 
 - `config` — `\hypeJunction\Filestore\Config\Config`
 - `hooks` — `\hypeJunction\Filestore\Listeners\PluginHooks`
@@ -62,6 +62,17 @@ None. The fast icon serving endpoint at `servers/icon.php` is reached via direct
 ## Dependencies
 
 No declared plugin-to-plugin dependencies. Other plugins (hypeAttachments, hypeWall) that use file handling have historically called into `hypeFilestore()->iconFactory` at runtime.
+
+## Migration notes (4.x → 5.x)
+
+Applied 2026-04-24.
+
+- `composer.json`: `elgg/elgg ^4.0` → `^5.0`, `php >=7.4` → `>=8.2`
+- `elgg-plugin.php`: `'hooks'` key renamed to `'events'` (unified event system in 5.x)
+- `PluginHooks::handleEntityIconUrls`: `\Elgg\Hook` → `\Elgg\Event` signature; `getEntityParam()` → `getParam('entity')`
+- `CoverHandler`, `Icons/Factory`: `elgg_trigger_plugin_hook()` → `elgg_trigger_event_results()`
+- Docker: PHP 7.4→8.2, MySQL 5.7→8.0, phpunit ~9.5→^10.0
+- Playwright smoke test updated for Elgg 5.x simplecache URL format change
 
 ## Migration notes (2.x → 3.x)
 
