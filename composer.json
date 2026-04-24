@@ -19,12 +19,12 @@
 		}
 	},
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.2",
 		"ext-json": "*",
 		"ext-xml": "*",
 		"ext-curl": "*",
 		"ext-gd": "*",
-		"elgg/elgg": "^4.0",
+		"elgg/elgg": "^5.0",
 		"composer/installers": "^2.0"
 	},
 	"config": {
