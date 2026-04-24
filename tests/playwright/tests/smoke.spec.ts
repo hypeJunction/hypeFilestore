@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 /**
  * E2E smoke for hypefilestore.
  *
- * Service-only plugin: registers an entity:icon:url hook handler in
+ * Service-only plugin: registers an entity:icon:url event handler in
  * elgg-plugin.php so file/icon URLs route through the plugin's
  * IconServer. No actions, no routes, no view extensions. Smoke surface:
  *   - homepage activates without fataling
@@ -32,11 +32,21 @@ test.describe('hypefilestore', () => {
   });
 
   test('default css aggregate compiles', async ({ page }) => {
-    const response = await page.goto('/cache/0/default/elgg.css');
+    // Elgg 5.x uses a real timestamp in the simplecache URL (/cache/<ts>/default/elgg.css).
+    // Extract the pathname from the homepage and navigate to it so the node
+    // container stays on http://elgg (not the host-mapped localhost:PORT URL).
+    await page.goto('/');
+    const cssPath = await page.evaluate(() => {
+      const link = Array.from(document.querySelectorAll('link[rel="stylesheet"]'))
+        .find((el) => (el as HTMLLinkElement).href.includes('elgg.css'));
+      if (!link) return null;
+      const url = new URL((link as HTMLLinkElement).href);
+      return url.pathname;
+    });
+    expect(cssPath).toBeTruthy();
+    const response = await page.goto(cssPath!);
     expect(response).toBeTruthy();
-    if (response!.status() !== 404) {
-      expect(response!.status()).toBeLessThan(400);
-      expect(response!.headers()['content-type'] || '').toMatch(/css|text/);
-    }
+    expect(response!.status()).toBeLessThan(400);
+    expect(response!.headers()['content-type'] || '').toMatch(/css|text/);
   });
 });
