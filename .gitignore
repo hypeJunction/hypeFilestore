@@ -5,8 +5,10 @@ robots.txt
 /nbproject/
 composer.lock
 
-/vendor/docker/.env
+/vendor/
+docker/.env
 tests/playwright/node_modules/
 tests/playwright/test-results/
 tests/playwright/playwright-report/
 tests/.phpunit.result.cache
+tests/coverage/

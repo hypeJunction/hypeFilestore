@@ -4,13 +4,16 @@ namespace hypeJunction\Filestore\Handlers;
 
 use WideImage\WideImage;
 
+/**
+ * Image manipulation wrapper around WideImage.
+ */
 class Image {
 
 	const MASTER = 550;
 
 	/**
-	 * 
-	 * @var \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage 
+	 *
+	 * @var \WideImage\Image|\WideImage\PaletteImage|\WideImage\TrueColorImage
 	 */
 	private $source;
 
@@ -30,7 +33,7 @@ class Image {
 	 * @param array $coords Coordinates, include 'master_width', 'master_height', 'x1', 'y1' etc
 	 * @return Image
 	 */
-	public function resize($props = array(), $coords = null) {
+	public function resize($props = [], $coords = null) {
 
 		$croppable = elgg_extract('croppable', $props, false);
 
@@ -67,7 +70,7 @@ class Image {
 	 * @param quality $quality Quality options
 	 * @return Image
 	 */
-	public function save($path, $quality = array()) {
+	public function save($path, $quality = []) {
 		$ext = pathinfo($path, PATHINFO_EXTENSION);
 
 		$jpeg_quality = elgg_extract('jpeg_quality', $quality);
@@ -75,20 +78,19 @@ class Image {
 		$png_filter = elgg_extract('png_filter', $quality);
 		
 		switch ($ext) {
-			default :
+			default:
 				$this->source->saveToFile($path, $jpeg_quality);
 				break;
 
-			case 'gif';
+			case 'gif':
 				$this->source->saveToFile($path);
 				break;
 
-			case 'png' :
+			case 'png':
 				$this->source->saveToFile($path, $png_quality, $png_filter);
 				break;
 		}
 		
 		return $this;
 	}
-
 }

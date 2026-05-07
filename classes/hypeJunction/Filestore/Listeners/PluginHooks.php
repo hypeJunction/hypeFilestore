@@ -5,7 +5,6 @@ namespace hypeJunction\Filestore\Listeners;
 use hypeJunction\Filestore\Config\Config;
 use hypeJunction\Filestore\Icons\Factory;
 
-
 /**
  * Plugin hooks service
  */
@@ -51,7 +50,7 @@ class PluginHooks {
 	/**
 	 * Filter icon URLs to route requests via a faster handler.
 	 *
-	 * @param \Elgg\Event $event
+	 * @param \Elgg\Event $event Event with the entity whose icon URL is requested
 	 * @return string|null
 	 */
 	public static function handleEntityIconUrls(\Elgg\Event $event) {
@@ -65,6 +64,7 @@ class PluginHooks {
 		if (!$entity) {
 			return $existing;
 		}
+
 		$size = $event->getParam('size', 'medium');
 
 		$factory = hypeFilestore()->iconFactory;
@@ -75,5 +75,4 @@ class PluginHooks {
 
 		return $factory->getURL($entity, $size);
 	}
-
 }

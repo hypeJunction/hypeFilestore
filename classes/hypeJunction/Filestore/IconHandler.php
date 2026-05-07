@@ -15,10 +15,11 @@ use ElggFile;
 class IconHandler {
 
 	/**
-	 * List of croppabe icon sizes
-	 * @static array
+	 * List of croppable icon sizes
+	 *
+	 * @var array
 	 */
-	static $croppable = array('topbar', 'tiny', 'small', 'medium', 'large');
+	public static $croppable = ['topbar', 'tiny', 'small', 'medium', 'large'];
 
 	/**
 	 * Create icons for an entity
@@ -31,7 +32,7 @@ class IconHandler {
 	 * @uses array  $config['coords']                Cropping coords
 	 * @return array|boolean An array of filehandlers for created icons or false on error
 	 */
-	public static function makeIcons($entity, $source_file = null, array $config = array()) {
+	public static function makeIcons($entity, $source_file = null, array $config = []) {
 		return hypeFilestore()->iconFactory->create($entity, $source_file, $config);
 	}
 
@@ -42,7 +43,7 @@ class IconHandler {
 	 * @param array      $icon_sizes An array of predefined icon sizes
 	 * @return array
 	 */
-	public static function getIconSizes($entity, $icon_sizes = array()) {
+	public static function getIconSizes($entity, $icon_sizes = []) {
 		return hypeFilestore()->iconFactory->getSizes($entity, $icon_sizes);
 	}
 
@@ -56,5 +57,4 @@ class IconHandler {
 	public static function outputRawIcon($entity_guid = 0, $size = null) {
 		return hypeFilestore()->iconFactory->outputRawIcon($entity_guid, $size);
 	}
-
 }

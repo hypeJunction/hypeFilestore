@@ -22,8 +22,8 @@ use hypeJunction\Filestore\Listeners\PluginHooks;
  * @property-read Uploader    $uploader
  * @property-read Factory     $iconFactory
  */
-class PluginContainer
-{
+class PluginContainer {
+
 	/** @var Config|null */
 	private $config;
 
@@ -36,23 +36,39 @@ class PluginContainer
 	/** @var Factory|null */
 	private $iconFactory;
 
-	public function __get(string $key)
-	{
+	/**
+	 * Magic getter — lazy-instantiates services on first access.
+	 *
+	 * @param string $key Service name
+	 * @return mixed
+	 * @throws \RuntimeException If the service name is unknown.
+	 */
+	public function __get(string $key) {
 		switch ($key) {
 			case 'config':
-				return $this->config ?? ($this->config = Config::factory());
+				$this->config = $this->config ?? Config::factory();
+				return $this->config;
 			case 'iconFactory':
-				return $this->iconFactory ?? ($this->iconFactory = new Factory($this->__get('config')));
+				$this->iconFactory = $this->iconFactory ?? new Factory($this->__get('config'));
+				return $this->iconFactory;
 			case 'hooks':
-				return $this->hooks ?? ($this->hooks = new PluginHooks($this->__get('config'), $this->__get('iconFactory')));
+				$this->hooks = $this->hooks ?? new PluginHooks($this->__get('config'), $this->__get('iconFactory'));
+				return $this->hooks;
 			case 'uploader':
-				return $this->uploader ?? ($this->uploader = new Uploader($this->__get('config'), $this->__get('iconFactory')));
+				$this->uploader = $this->uploader ?? new Uploader($this->__get('config'), $this->__get('iconFactory'));
+				return $this->uploader;
 		}
+
 		throw new \RuntimeException("Undefined service: $key");
 	}
 
-	public function __isset(string $key): bool
-	{
+	/**
+	 * Magic isset — reports whether the named service is defined.
+	 *
+	 * @param string $key Service name
+	 * @return bool
+	 */
+	public function __isset(string $key): bool {
 		return in_array($key, ['config', 'hooks', 'uploader', 'iconFactory'], true);
 	}
 
@@ -61,8 +77,7 @@ class PluginContainer
 	 *
 	 * @return PluginContainer
 	 */
-	public static function create(): self
-	{
+	public static function create(): self {
 		return new self();
 	}
 }

@@ -17,14 +17,25 @@ class Config {
 	const SIZE_LARGE = 'large';
 	const SIZE_MASTER = 'master';
 
+	/**
+	 * @var ElggPlugin
+	 */
 	private $plugin;
+
+	/**
+	 * @var array|null
+	 */
 	private $settings;
-	private $config = array(
+
+	/**
+	 * @var array
+	 */
+	private $config = [
 		'filestore_prefix' => 'file',
 		'icon_filestore_prefix' => 'icons',
 		'default_size' => self::SIZE_MEDIUM,
 		'master_size_length' => 550,
-	);
+	];
 
 	/**
 	 * Constructor
@@ -41,8 +52,8 @@ class Config {
 	public static function factory() {
 		// Try lowercase canonical (Elgg 4.x Iron Law 6) then camelCase fallback
 		// for transitional 3.x environments where the dir is still mixed-case.
-		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID)
-			?: elgg_get_plugin_from_id('hypeFilestore');
+		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID) ?: elgg_get_plugin_from_id('hypeFilestore');
+
 		return new Config($plugin);
 	}
 
@@ -55,13 +66,15 @@ class Config {
 			$plugin_settings = array_filter($this->plugin->getAllSettings());
 			$this->settings = array_merge($this->config, $plugin_settings);
 		}
+
 		return $this->settings;
 	}
 
 	/**
 	 * Returns a plugin setting
 	 *
-	 * @param string $name Setting name
+	 * @param string $name    Setting name
+	 * @param mixed  $default Default value if setting is not set
 	 * @return mixed
 	 */
 	public function get($name, $default = null) {
@@ -97,13 +110,13 @@ class Config {
 	 * @return array
 	 */
 	public function getCroppableSizes() {
-		return array(
+		return [
 			self::SIZE_LARGE,
 			self::SIZE_MEDIUM,
 			self::SIZE_SMALL,
 			self::SIZE_TINY,
 			self::SIZE_TOPBAR,
-		);
+		];
 	}
 
 	/**
@@ -111,29 +124,29 @@ class Config {
 	 * @return array
 	 */
 	public function getFileIconSizes() {
-		return array(
-			'small' => array(
+		return [
+			'small' => [
 				'w' => 60,
 				'h' => 60,
 				'square' => true,
 				'upscale' => true,
 				'metadata_name' => 'thumbnail',
-			),
-			'medium' => array(
+			],
+			'medium' => [
 				'w' => 153,
 				'h' => 153,
 				'square' => true,
 				'upscale' => true,
 				'metadata_name' => 'smallthumb',
-			),
-			'large' => array(
+			],
+			'large' => [
 				'w' => 600,
 				'h' => 600,
 				'square' => true,
 				'upscacle' => true,
 				'metadata_name' => 'largethumb',
-			)
-		);
+			],
+		];
 	}
 
 	/**
@@ -149,11 +162,11 @@ class Config {
 	 * @return array
 	 */
 	public function getIconCompressionOpts() {
-		return array(
+		return [
 			'jpeg_quality' => $this->get('icon_jpeg_quality', 100),
 			'png_compression' => $this->get('icon_png_compression', 0),
 			'png_filter' => $this->get('icon_png_filter', PNG_NO_FILTER),
-		);
+		];
 	}
 
 	/**
@@ -161,11 +174,10 @@ class Config {
 	 * @return array
 	 */
 	public function getSrcCompressionOpts() {
-		return array(
+		return [
 			'jpeg_quality' => $this->get('jpeg_quality', 100),
 			'png_compression' => $this->get('png_compression', 0),
 			'png_filter' => $this->get('png_filter', PNG_NO_FILTER),
-		);
+		];
 	}
-
 }

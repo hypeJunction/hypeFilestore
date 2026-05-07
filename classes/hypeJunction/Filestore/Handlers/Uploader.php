@@ -8,7 +8,9 @@ use hypeJunction\Filestore\Config\Config;
 use hypeJunction\Filestore\Handlers\Uploader\Upload;
 use hypeJunction\Filestore\Icons\Factory;
 
-
+/**
+ * Coordinates entity uploads, persisting attached files and refreshing icons.
+ */
 class Uploader {
 
 	/**
@@ -26,7 +28,7 @@ class Uploader {
 	/**
 	 * Constructor
 	 *
-	 * @param Config $config      Config
+	 * @param Config  $config      Config
 	 * @param Factory $iconFactory Icon Factory
 	 */
 	public function __construct(Config $config, Factory $iconFactory) {
@@ -40,22 +42,21 @@ class Uploader {
 	 * @param string $input      Name of the file input
 	 * @param array  $attributes Attributes and metadata for saving files
 	 * @param array  $options    Additional factory options (including entity attributes such as type, subtype, owner_guid, container_guid, access_id etc
-	 *                             'icon_sizes'            ARR Optional. An array of icon sizes to create (for image uploads)
-	 *                             'coords'                ARR Optional. Coordinates for icon cropping
-	 *                             'filestore_prefix'      STR Optional. Custom prefix on Elgg filestore
-	 *                             'icon_filestore_prefix' STR Optional. Custom prefix for created icons on Elgg filestore
+	 *                           'icon_sizes'            ARR Optional. An array of icon sizes to create (for image uploads)
+	 *                           'coords'                ARR Optional. Coordinates for icon cropping
+	 *                           'filestore_prefix'      STR Optional. Custom prefix on Elgg filestore
+	 *                           'icon_filestore_prefix' STR Optional. Custom prefix for created icons on Elgg filestore
 	 * @return ElggFile[]
 	 */
-	public function handle($input = '', array $attributes = array(), array $options = array()) {
+	public function handle($input = '', array $attributes = [], array $options = []) {
 
-		$result = array();
+		$result = [];
 		$uploads = $this->getUploads($input);
 
 		$filestore_prefix = elgg_extract('filestore_prefix', $options, $this->config->getDefaultFilestorePrefix());
 		unset($options['filestore_prefix']);
 		
 		foreach ($uploads as $props) {
-
 			$upload = new Upload($props);
 			$upload->save($attributes, $filestore_prefix);
 
@@ -74,7 +75,7 @@ class Uploader {
 	 * @return array
 	 */
 	protected function getGlobals() {
-		return (is_array($_FILES)) ? $_FILES : array();
+		return (is_array($_FILES)) ? $_FILES : [];
 	}
 
 	/**
@@ -88,7 +89,7 @@ class Uploader {
 	protected function getUploads($input = '') {
 
 		$global = $this->getGlobals();
-		$uploads = array();
+		$uploads = [];
 		$input = (string) $input;
 
 		if (empty($global) || !isset($global[$input])) {
@@ -105,10 +106,11 @@ class Uploader {
 			$input_keys = array_keys($global[$input][$primary_key]);
 
 			foreach ($input_keys as $i) {
-				$upload = array();
+				$upload = [];
 				foreach ($keys as $key) {
 					$upload[$key] = $global[$input][$key][$i];
 				}
+
 				$uploads[] = $upload;
 			}
 		} else {
@@ -118,5 +120,4 @@ class Uploader {
 
 		return $uploads;
 	}
-
 }

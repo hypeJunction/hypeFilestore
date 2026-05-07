@@ -2,18 +2,63 @@
 
 namespace hypeJunction\Filestore\Icons;
 
+/**
+ * Standalone icon server — fetches and streams entity icons from disk
+ * without bootstrapping the full Elgg engine.
+ */
 class Server {
 
+	/**
+	 * @var \Elgg\Database\Config
+	 */
 	private $dbConfig;
+
+	/**
+	 * @var string
+	 */
 	private $dbPrefix;
+
+	/**
+	 * @var resource|false|null
+	 */
 	private $dbLink;
+
+	/**
+	 * @var int|null
+	 */
 	private $guid;
+
+	/**
+	 * @var string|null
+	 */
 	private $size;
+
+	/**
+	 * @var int|null
+	 */
 	private $dir_guid;
+
+	/**
+	 * @var int|null
+	 */
 	private $icontime;
+
+	/**
+	 * @var string|null
+	 */
 	private $path;
+
+	/**
+	 * @var string|null
+	 */
 	private $hmac;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param \Elgg\Database\Config $dbConfig Database config service
+	 * @param string                $dbPrefix Table prefix
+	 */
 	public function __construct(\Elgg\Database\Config $dbConfig, $dbPrefix = 'elgg_') {
 		$this->dbConfig = $dbConfig;
 		$this->dbPrefix = $dbPrefix;
@@ -38,22 +83,22 @@ class Server {
 		}
 
 		if (!$this->guid || !$this->icontime || !$this->path || !$this->hmac) {
-			header("HTTP/1.1 404 Not Found");
+			header('HTTP/1.1 404 Not Found');
 			exit;
 		}
 
 		$etag = $this->icontime . $this->guid;
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']) && trim($_SERVER['HTTP_IF_NONE_MATCH']) == "\"$etag\"") {
-			header("HTTP/1.1 304 Not Modified");
+			header('HTTP/1.1 304 Not Modified');
 			exit;
 		}
 
 		$this->openDbLink();
-		$values = $this->getDatalistValue(array('dataroot', '__site_secret__'));
+		$values = $this->getDatalistValue(['dataroot', '__site_secret__']);
 		$this->closeDbLink();
 
 		if (empty($values)) {
-			header("HTTP/1.1 404 Not Found");
+			header('HTTP/1.1 404 Not Found');
 			exit;
 		}
 
@@ -62,7 +107,7 @@ class Server {
 
 		$hmac = hash_hmac('sha256', $this->guid . $this->path, $key);
 		if ($this->hmac !== $hmac) {
-			header("HTTP/1.1 403 Forbidden");
+			header('HTTP/1.1 403 Forbidden');
 			exit;
 		}
 
@@ -70,28 +115,28 @@ class Server {
 		$filename = $data_root . $locator->getPath() . $this->path;
 
 		if (!file_exists($filename)) {
-			header("HTTP/1.1 404 Not Found");
+			header('HTTP/1.1 404 Not Found');
 			exit;
 		}
 
 		$filesize = filesize($filename);
 		$ext = pathinfo($filename, PATHINFO_EXTENSION);
 		switch ($ext) {
-			default :
+			default:
 				$mimetype = 'image/jpeg';
 				break;
-			case 'png' :
+			case 'png':
 				$mimetype = 'image/png';
 				break;
-			case 'gif' :
+			case 'gif':
 				$mimetype = 'image/gif';
 				break;
 		}
 
 		header("Content-type: $mimetype");
-		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime("+6 months")), true);
-		header("Pragma: public");
-		header("Cache-Control: public");
+		header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', strtotime('+6 months')), true);
+		header('Pragma: public');
+		header('Cache-Control: public');
 		header("Content-Length: $filesize");
 		header("ETag: \"$etag\"");
 		readfile($filename);
@@ -106,6 +151,7 @@ class Server {
 		if ($this->dbConfig->isDatabaseSplit()) {
 			return $this->dbConfig->getConnectionConfig(\Elgg\Database\Config::READ);
 		}
+
 		return $this->dbConfig->getConnectionConfig(\Elgg\Database\Config::READ_WRITE);
 	}
 
@@ -130,32 +176,34 @@ class Server {
 
 	/**
 	 * Retreive values from datalists table
-	 * 
+	 *
 	 * @param array $names Parameter names to retreive
 	 * @return array
 	 */
-	protected function getDatalistValue(array $names = array()) {
+	protected function getDatalistValue(array $names = []) {
 
 		if (!$this->dbLink) {
-			return array();
+			return [];
 		}
 
 		$dbConfig = $this->getDbConfig();
 		if (!mysql_select_db($dbConfig['database'], $this->dbLink)) {
-			return array();
+			return [];
 		}
 
 		if (empty($names)) {
-			return array();
+			return [];
 		}
-		$names_in = array();
+
+		$names_in = [];
 		foreach ($names as $name) {
 			$name = mysql_real_escape_string($name);
 			$names_in[] = "'$name'";
 		}
+
 		$names_in = implode(',', $names_in);
 
-		$values = array();
+		$values = [];
 
 		$q = "SELECT name, value
 				FROM {$this->dbPrefix}datalists
@@ -184,7 +232,7 @@ class Server {
 		if (isset($_GET[$name])) {
 			return $_GET[$name];
 		}
+
 		return $default;
 	}
-
 }

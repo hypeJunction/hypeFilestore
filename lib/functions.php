@@ -9,17 +9,18 @@
  */
 
 if (!function_exists('hypeFilestore')) {
-    /**
-     * Plugin DI Container singleton.
-     *
-     * @return \hypeJunction\Filestore\Di\PluginContainer
-     */
-    function hypeFilestore()
-    {
-        static $provider;
-        if (null === $provider) {
-            $provider = \hypeJunction\Filestore\Di\PluginContainer::create();
-        }
-        return $provider;
-    }
+
+	/**
+	 * Plugin DI Container singleton.
+	 *
+	 * @return \hypeJunction\Filestore\Di\PluginContainer
+	 */
+	function hypeFilestore() {
+		static $provider;
+		if ($provider === null) {
+			$provider = \hypeJunction\Filestore\Di\PluginContainer::create();
+		}
+
+		return $provider;
+	}
 }
