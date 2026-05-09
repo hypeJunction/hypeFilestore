@@ -2,7 +2,7 @@
 	"name": "hypejunction/hypefilestore",
 	"type": "elgg-plugin",
 	"description": "File and image handling utilities",
-	"homepage": "http://hypejunction.com",
+	"homepage": "https://github.com/hypeJunction/hypefilestore",
 	"keywords": [
 		"elgg", "plugin", "uploads", "files", "icons"
 	],
@@ -39,4 +39,3 @@
 		}
 	}
 }
-
