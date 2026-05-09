@@ -68,7 +68,7 @@ class PluginHooks {
 		$size = $event->getParam('size', 'medium');
 
 		$factory = hypeFilestore()->iconFactory;
-		if (!$entity->icontime || !array_key_exists($size, $factory->getSizes($entity))) {
+		if (!$entity->getPrivateSetting('icontime') || !array_key_exists($size, $factory->getSizes($entity))) {
 			// icon has not yet been created or the icon size is unknown
 			return $existing;
 		}

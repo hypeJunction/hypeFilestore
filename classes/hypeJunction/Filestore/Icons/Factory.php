@@ -66,7 +66,7 @@ class Factory {
 		$entity->icon_directory = $dir;
 
 		// reset
-		unset($entity->icontime);
+		$entity->removePrivateSetting('icontime');
 		foreach (['x1', 'x2', 'y1', 'y2'] as $coord) {
 			unset($entity->$coord);
 		}
@@ -132,7 +132,7 @@ class Factory {
 			$entity->$name = $value;
 		}
 
-		$entity->icontime = time();
+		$entity->setPrivateSetting('icontime', time());
 
 		return $icons;
 	}
@@ -260,7 +260,7 @@ class Factory {
 			'guid' => $guid,
 			'dir_guid' => ($entity instanceof ElggUser) ? $entity->guid : $entity->owner_guid, // guid of the dir owner
 			'path' => $path,
-			'ts' => $entity->icontime,
+			'ts' => $entity->getPrivateSetting('icontime'),
 			'size' => $size,
 			'mac' => $hmac,
 		]);
@@ -290,7 +290,7 @@ class Factory {
 
 		$size = strtolower(get_input('size', 'medium'));
 		$filename = 'icons/' . $entity->guid . $size . '.jpg';
-		$etag = md5($entity->icontime . $size);
+		$etag = md5((string) $entity->getPrivateSetting('icontime') . $size);
 		$filehandler = new ElggFile();
 		$filehandler->owner_guid = $entity->owner_guid;
 		$filehandler->setFilename($filename);
