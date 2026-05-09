@@ -19,12 +19,13 @@
 		}
 	},
 	"require": {
-		"php": ">=8.2",
+		"php": ">=8.3",
+		"ext-intl": "*",
 		"ext-json": "*",
 		"ext-xml": "*",
 		"ext-curl": "*",
 		"ext-gd": "*",
-		"elgg/elgg": "~6.1.0",
+		"elgg/elgg": "~7.0.0",
 		"composer/installers": "^2.0"
 	},
 	"config": {
