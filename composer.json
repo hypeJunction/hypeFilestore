@@ -42,6 +42,5 @@
             "hypeJunction\\Filestore\\": "classes/hypeJunction/Filestore/",
             "WideImage\\": "vendors/WideImage/lib/WideImage/"
         }
-    },
-    "version": "7.0.0"
+    }
 }
