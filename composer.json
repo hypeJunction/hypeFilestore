@@ -4,7 +4,11 @@
 	"description": "File and image handling utilities",
 	"homepage": "https://github.com/hypeJunction/hypefilestore",
 	"keywords": [
-		"elgg", "plugin", "uploads", "files", "icons"
+		"elgg",
+		"plugin",
+		"uploads",
+		"files",
+		"icons"
 	],
 	"license": "GPL-2.0-or-later",
 	"authors": [
@@ -19,7 +23,7 @@
 		}
 	},
 	"require": {
-		"php": ">=8.2",
+		"php": ">=8.1",
 		"ext-json": "*",
 		"ext-xml": "*",
 		"ext-curl": "*",
