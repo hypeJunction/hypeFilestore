@@ -1,42 +1,48 @@
 {
-	"name": "hypejunction/hypefilestore",
-	"type": "elgg-plugin",
-	"description": "File and image handling utilities",
-	"homepage": "http://hypejunction.com",
-	"keywords": [
-		"elgg", "plugin", "uploads", "files", "icons"
-	],
-	"license": "GPL-2.0-or-later",
-	"authors": [
-		{
-			"name": "Ismayil Khayredinov",
-			"email": "ismayil.khayredinov@gmail.com"
-		}
-	],
-	"extra": {
-		"elgg-plugin": {
-			"id": "hypefilestore"
-		}
-	},
-	"require": {
-		"php": ">=7.4",
-		"ext-json": "*",
-		"ext-xml": "*",
-		"ext-curl": "*",
-		"ext-gd": "*",
-		"elgg/elgg": "^4.0",
-		"composer/installers": "^2.0"
-	},
-	"config": {
-		"allow-plugins": {
-			"composer/installers": true
-		}
-	},
-	"autoload": {
-		"psr-4": {
-			"hypeJunction\\Filestore\\": "classes/hypeJunction/Filestore/",
-			"WideImage\\": "vendors/WideImage/lib/WideImage/"
-		}
-	}
+    "name": "hypejunction/hypefilestore",
+    "type": "elgg-plugin",
+    "description": "File and image handling utilities",
+    "homepage": "http://hypejunction.com",
+    "keywords": [
+        "elgg",
+        "plugin",
+        "uploads",
+        "files",
+        "icons"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Ismayil Khayredinov",
+            "email": "ismayil.khayredinov@gmail.com"
+        }
+    ],
+    "extra": {
+        "elgg-plugin": {
+            "id": "hypefilestore"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "ext-json": "*",
+        "ext-xml": "*",
+        "ext-curl": "*",
+        "ext-gd": "*",
+        "elgg/elgg": "^4.0",
+        "composer/installers": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "hypeJunction\\Filestore\\": "classes/hypeJunction/Filestore/",
+            "WideImage\\": "vendors/WideImage/lib/WideImage/"
+        },
+        "files": [
+            "lib/functions.php"
+        ]
+    }
 }
-
