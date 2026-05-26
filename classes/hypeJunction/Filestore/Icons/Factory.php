@@ -59,8 +59,8 @@ class Factory {
 			return false;
 		}
 
-		$coords = elgg_extract('coords', $options, false);
-		$dir = $this->getIconDirectory($entity, elgg_extract('icon_filestore_prefix', $options));
+		$coords = \elgg_extract('coords', $options, false);
+		$dir = $this->getIconDirectory($entity, \elgg_extract('icon_filestore_prefix', $options));
 
 		$entity->icon_mimetype = \ElggFile::detectMimeType($source, 'image/jpeg');
 		$entity->icon_directory = $dir;
@@ -75,7 +75,7 @@ class Factory {
 		$icons = [];
 		$icons_meta = [];
 
-		$icon_sizes = $this->getSizes($entity, elgg_extract('icon_sizes', $options, []));
+		$icon_sizes = $this->getSizes($entity, \elgg_extract('icon_sizes', $options, []));
 
 		foreach ($icon_sizes as $size => $props) {
 			if (!isset($props['croppable'])) {
@@ -101,7 +101,7 @@ class Factory {
 					$icons_meta[$metadata_name] = $icon->getFilename();
 				}
 			} catch (Exception $ex) {
-				elgg_log($ex->getMessage(), 'ERROR');
+				\elgg_log($ex->getMessage(), 'ERROR');
 				$error = true;
 			}
 		}
@@ -149,7 +149,7 @@ class Factory {
 		$defaults = ($entity instanceof ElggFile) ? $this->config->getFileIconSizes() : $this->config->getGlobalIconSizes();
 		$sizes = array_merge($defaults, $icon_sizes);
 
-		return elgg_trigger_event_results('entity:icon:sizes', $entity->getType(), [
+		return \elgg_trigger_event_results('entity:icon:sizes', $entity->getType(), [
 			'entity' => $entity,
 			'subtype' => $entity->getSubtype(),
 		], $sizes);
@@ -177,7 +177,7 @@ class Factory {
 			}
 		}
 
-		$directory = elgg_trigger_event_results('entity:icon:directory', $entity->getType(), [
+		$directory = \elgg_trigger_event_results('entity:icon:directory', $entity->getType(), [
 			'entity' => $entity,
 			'size' => $size,
 		], $directory);
@@ -208,7 +208,7 @@ class Factory {
 		}
 
 		$filename = "{$entity->guid}{$size}.{$ext}";
-		return elgg_trigger_event_results('entity:icon:directory', $entity->getType(), [
+		return \elgg_trigger_event_results('entity:icon:directory', $entity->getType(), [
 			'entity' => $entity,
 			'size' => $size,
 		], $filename);
@@ -256,7 +256,7 @@ class Factory {
 
 		$hmac = hash_hmac('sha256', $guid . $path, $key);
 
-		$url = elgg_http_add_url_query_elements('mod/hypeFilestore/servers/icon.php', [
+		$url = \elgg_http_add_url_query_elements('mod/hypeFilestore/servers/icon.php', [
 			'guid' => $guid,
 			'dir_guid' => ($entity instanceof ElggUser) ? $entity->guid : $entity->owner_guid, // guid of the dir owner
 			'path' => $path,
@@ -265,7 +265,7 @@ class Factory {
 			'mac' => $hmac,
 		]);
 
-		return elgg_normalize_url($url);
+		return \elgg_normalize_url($url);
 	}
 
 	/**
