@@ -41,8 +41,8 @@ class Config {
 	public static function factory() {
 		// Try lowercase canonical (Elgg 4.x Iron Law 6) then camelCase fallback
 		// for transitional 3.x environments where the dir is still mixed-case.
-		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID)
-			?: elgg_get_plugin_from_id('hypeFilestore');
+		$plugin = \elgg_get_plugin_from_id(self::PLUGIN_ID)
+			?: \elgg_get_plugin_from_id('hypeFilestore');
 		return new Config($plugin);
 	}
 
@@ -65,7 +65,7 @@ class Config {
 	 * @return mixed
 	 */
 	public function get($name, $default = null) {
-		return elgg_extract($name, $this->all(), $default);
+		return \elgg_extract($name, $this->all(), $default);
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Config {
 	 * @return array
 	 */
 	public function getGlobalIconSizes() {
-		return elgg_get_config('icon_sizes');
+		return \elgg_get_config('icon_sizes');
 	}
 
 	/**
