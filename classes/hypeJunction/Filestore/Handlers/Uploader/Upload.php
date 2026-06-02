@@ -144,6 +144,6 @@ class Upload {
 	 * @return string
 	 */
 	public function parseSimpleType() {
-		return \elgg_get_file_simple_type($this->detectMimeType());
+		return _elgg_services()->mimetype->getSimpleType($this->detectMimeType());
 	}
 }
