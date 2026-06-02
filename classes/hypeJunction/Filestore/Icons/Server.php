@@ -4,17 +4,30 @@ namespace hypeJunction\Filestore\Icons;
 
 class Server {
 
-	private $dbConfig;
-	private $dbPrefix;
-	private $dbLink;
-	private $guid;
-	private $size;
-	private $dir_guid;
-	private $icontime;
-	private $path;
-	private $hmac;
+	/** @var mixed */
+    private $dbConfig;
+	/** @var mixed */
+    private $dbPrefix;
+	/** @var mixed */
+    private $dbLink;
+	/** @var mixed */
+    private $guid;
+	/** @var mixed */
+    private $size;
+	/** @var mixed */
+    private $dir_guid;
+	/** @var mixed */
+    private $icontime;
+	/** @var mixed */
+    private $path;
+	/** @var mixed */
+    private $hmac;
 
-	public function __construct(\Elgg\Database\Config $dbConfig, $dbPrefix = 'elgg_') {
+	/**
+     * @param Elgg\Database\Config $dbConfig
+     * @param mixed $dbPrefix
+     */
+    public function __construct(\Elgg\Database\Config $dbConfig, $dbPrefix = 'elgg_') {
 		$this->dbConfig = $dbConfig;
 		$this->dbPrefix = $dbPrefix;
 

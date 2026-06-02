@@ -23,14 +23,20 @@ use hypeJunction\Filestore\Icons\Factory;
  */
 class PluginSmokeTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function testPluginIsActive(): void
     {
-        $plugin = \elgg_get_plugin_from_id('hypefilestore') ?: \elgg_get_plugin_from_id('hypeFilestore');
+        $plugin = \elgg_get_plugin_from_id('hypefilestore') ?: \elgg_get_plugin_from_id('hypefilestore');
         $this->assertNotNull($plugin, 'hypeFilestore plugin should be registered');
         // Elgg 2.x isActive() returns an ElggRelationship object (truthy) when active, false otherwise.
         $this->assertNotFalse($plugin->isActive(), 'hypeFilestore should be active');
     }
 
+    /**
+     * @return void
+     */
     public function testGlobalFactoryFunctionExists(): void
     {
         $this->assertTrue(
@@ -39,37 +45,58 @@ class PluginSmokeTest extends TestCase
         );
     }
 
+    /**
+     * @return void
+     */
     public function testDiContainerInstantiates(): void
     {
         $container = hypeFilestore();
         $this->assertInstanceOf(PluginContainer::class, $container);
     }
 
+    /**
+     * @return void
+     */
     public function testDiContainerIsSingleton(): void
     {
         $this->assertSame(hypeFilestore(), hypeFilestore());
     }
 
+    /**
+     * @return void
+     */
     public function testConfigServiceResolves(): void
     {
         $this->assertInstanceOf(Config::class, hypeFilestore()->config);
     }
 
+    /**
+     * @return void
+     */
     public function testHooksServiceResolves(): void
     {
         $this->assertInstanceOf(PluginHooks::class, hypeFilestore()->hooks);
     }
 
+    /**
+     * @return void
+     */
     public function testUploaderServiceResolves(): void
     {
         $this->assertInstanceOf(Uploader::class, hypeFilestore()->uploader);
     }
 
+    /**
+     * @return void
+     */
     public function testIconFactoryServiceResolves(): void
     {
         $this->assertInstanceOf(Factory::class, hypeFilestore()->iconFactory);
     }
 
+    /**
+     * @return void
+     */
     public function testInitHandlerRegistersIconUrlHook(): void
     {
         // Trigger the init() method and verify it doesn't throw.
@@ -79,6 +106,9 @@ class PluginSmokeTest extends TestCase
         $this->assertTrue(true, 'init() returned without error');
     }
 
+    /**
+     * @return void
+     */
     public function testEntityIconUrlHandlerCallable(): void
     {
         $hooks = hypeFilestore()->hooks;

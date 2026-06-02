@@ -17,9 +17,12 @@ class Config {
 	const SIZE_LARGE = 'large';
 	const SIZE_MASTER = 'master';
 
-	private $plugin;
-	private $settings;
-	private $config = array(
+	/** @var mixed */
+    private $plugin;
+	/** @var mixed */
+    private $settings;
+	/** @var mixed */
+    private $config = array(
 		'filestore_prefix' => 'file',
 		'icon_filestore_prefix' => 'icons',
 		'default_size' => self::SIZE_MEDIUM,
@@ -42,7 +45,7 @@ class Config {
 		// Try lowercase canonical (Elgg 4.x Iron Law 6) then camelCase fallback
 		// for transitional 3.x environments where the dir is still mixed-case.
 		$plugin = \elgg_get_plugin_from_id(self::PLUGIN_ID)
-			?: \elgg_get_plugin_from_id('hypeFilestore');
+			?: \elgg_get_plugin_from_id('hypefilestore');
 		return new Config($plugin);
 	}
 

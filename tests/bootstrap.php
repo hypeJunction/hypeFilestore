@@ -20,7 +20,7 @@ if (method_exists(\Elgg\Application::class, 'getInstance')) {
         // Force-enable + activate the plugin under test. generateEntities()
         // can leave the entity in a disabled state on first registration,
         // and we need it active for the smoke tests to assert anything.
-        $p = elgg_get_plugin_from_id('hypefilestore') ?: elgg_get_plugin_from_id('hypeFilestore');
+        $p = elgg_get_plugin_from_id('hypefilestore') ?: elgg_get_plugin_from_id('hypefilestore');
         if ($p) {
             if (!$p->isEnabled()) {
                 $p->enable();

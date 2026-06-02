@@ -36,7 +36,11 @@ class PluginContainer
 	/** @var Factory|null */
 	private $iconFactory;
 
-	public function __get(string $key)
+	/**
+     * @param string $key
+     * @return mixed
+     */
+    public function __get(string $key)
 	{
 		switch ($key) {
 			case 'config':
@@ -51,7 +55,11 @@ class PluginContainer
 		throw new \RuntimeException("Undefined service: $key");
 	}
 
-	public function __isset(string $key): bool
+	/**
+     * @param string $key
+     * @return bool
+     */
+    public function __isset(string $key): bool
 	{
 		return in_array($key, ['config', 'hooks', 'uploader', 'iconFactory'], true);
 	}

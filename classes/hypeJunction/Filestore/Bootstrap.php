@@ -16,17 +16,26 @@ use Elgg\DefaultPluginBootstrap;
  */
 class Bootstrap extends DefaultPluginBootstrap
 {
+    /**
+     * @return void
+     */
     public function load(): void
     {
         // No-op. PSR-4 autoload handled by composer.
     }
 
+    /**
+     * @return void
+     */
     public function boot(): void
     {
         // No-op. The plugin's services are constructed lazily via the
         // hypeFilestore() factory in lib/functions.php.
     }
 
+    /**
+     * @return void
+     */
     public function init(): void
     {
         // No-op. elgg_register_css() and elgg_register_external_view() were
@@ -36,26 +45,41 @@ class Bootstrap extends DefaultPluginBootstrap
         // them directly via their own view files.
     }
 
+    /**
+     * @return void
+     */
     public function ready(): void
     {
         // No-op.
     }
 
+    /**
+     * @return void
+     */
     public function shutdown(): void
     {
         // No-op.
     }
 
+    /**
+     * @return void
+     */
     public function activate(): void
     {
         // No-op. No schema or settings to provision.
     }
 
+    /**
+     * @return void
+     */
     public function deactivate(): void
     {
         // No-op.
     }
 
+    /**
+     * @return void
+     */
     public function upgrade(): void
     {
         // No-op.
