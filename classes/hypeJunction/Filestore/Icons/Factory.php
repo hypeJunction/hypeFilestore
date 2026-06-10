@@ -280,7 +280,7 @@ class Factory {
 			exit;
 		}
 
-		$ha = access_get_show_hidden_status();
+		$ha = elgg()->session->getDisabledEntityVisibility();
 		access_show_hidden_entities(true);
 		$entity_guid = get_input('guid');
 		$entity = get_entity($entity_guid);
