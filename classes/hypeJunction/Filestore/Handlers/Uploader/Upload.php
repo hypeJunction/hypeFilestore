@@ -48,7 +48,7 @@ class Upload {
 		$this->error = $this->getError();
 		$this->filesize = $this->size;
 		$this->path = $this->tmp_name;
-		$this->mimetype = $this->detectMimeType();
+		$this->mimetype = $this->resolveMimeType();
 		$this->simpletype = $this->parseSimpleType();
 		if (!$this->isSuccessful()) {
 			return $this;
@@ -135,8 +135,8 @@ class Upload {
 	 * Detects mime type of the upload
 	 * @return string
 	 */
-	public function detectMimeType() {
-		return ElggFile::detectMimeType($this->tmp_name, $this->type);
+	public function resolveMimeType() {
+		return _elgg_services()->mimetype->getMimeType($this->tmp_name, $this->type);
 	}
 
 	/**
@@ -144,6 +144,6 @@ class Upload {
 	 * @return string
 	 */
 	public function parseSimpleType() {
-		return elgg_get_file_simple_type($this->detectMimeType());
+		return _elgg_services()->mimetype->getSimpleType($this->resolveMimeType());
 	}
 }

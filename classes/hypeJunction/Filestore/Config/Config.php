@@ -50,9 +50,9 @@ class Config {
 	 * @return Config
 	 */
 	public static function factory() {
-		// Try lowercase canonical (Elgg 4.x Iron Law 6) then camelCase fallback
-		// for transitional 3.x environments where the dir is still mixed-case.
-		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID) ?: elgg_get_plugin_from_id('hypeFilestore');
+		// Elgg 4.x+ lowercases plugin ids; a camelCase id silently resolves to
+		// false (Iron Law 6), so the canonical lowercase id is the only lookup.
+		$plugin = elgg_get_plugin_from_id(self::PLUGIN_ID);
 
 		return new Config($plugin);
 	}

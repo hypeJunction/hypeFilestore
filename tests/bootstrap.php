@@ -1,52 +1,48 @@
 <?php
 /**
- * PHPUnit bootstrap for hypeFilestore pre-migration smoke tests (Elgg 2.x).
- *
- * Elgg 2.x has no IntegrationTestCase — we boot Elgg manually and run plain
- * PHPUnit\Framework\TestCase against the booted state. Plugin must already be
- * activated in the elgg2 Docker environment.
+ * PHPUnit bootstrap for hypeFilestore plugin tests (Elgg 7.x).
+ * Plugin must be installed at {elgg_root}/mod/hypefilestore/
  */
 
-$elggRoot = '/var/www/html';
+// tests/ -> mod/hypefilestore/ -> mod/ -> elgg_root/
+$elggRoot = dirname(__DIR__, 3);
 
 require_once $elggRoot . '/vendor/autoload.php';
 
-// Elgg 3.x boot pattern: getInstance() + bootCore() (Elgg 2.x used start()).
-// Both branches keep the test class itself version-agnostic.
-if (method_exists(\Elgg\Application::class, 'getInstance')) {
-    \Elgg\Application::getInstance()->bootCore();
-    if (function_exists('_elgg_services')) {
-        _elgg_services()->plugins->generateEntities();
-        // Force-enable + activate the plugin under test. generateEntities()
-        // can leave the entity in a disabled state on first registration,
-        // and we need it active for the smoke tests to assert anything.
-        $p = elgg_get_plugin_from_id('hypefilestore') ?: elgg_get_plugin_from_id('hypeFilestore');
-        if ($p) {
-            if (!$p->isEnabled()) {
-                $p->enable();
-            }
-            if (!$p->isActive()) {
-                $p->activate();
-            }
-        }
+// Load Elgg test base classes (UnitTestCase, IntegrationTestCase, etc.)
+$testClassesDir = $elggRoot . '/vendor/elgg/elgg/engine/tests/classes';
+spl_autoload_register(function ($class) use ($testClassesDir) {
+    $file = $testClassesDir . '/' . str_replace('\\', '/', $class) . '.php';
+    if (file_exists($file)) {
+        require_once $file;
     }
-} else {
-    \Elgg\Application::start();
-}
+});
 
-// Ensure plugin's hypeFilestore() factory is loaded.
-// In 4.x: lib/functions.php (loaded via require_once at top of elgg-plugin.php).
-// In 2.x: lib/autoloader.php (legacy location, replaced in 3→4).
 $pluginRoot = dirname(__DIR__);
-if (!function_exists('hypeFilestore')) {
-    if (file_exists($pluginRoot . '/lib/functions.php')) {
-        require_once $pluginRoot . '/lib/functions.php';
-    } elseif (file_exists($pluginRoot . '/lib/autoloader.php')) {
-        require_once $pluginRoot . '/lib/autoloader.php';
-    }
-}
 
-// PSR-4 autoload (3.x+ replacement for elgg_register_classes)
+// Plugin PSR-4 autoload (3.x+ replacement for the removed elgg_register_classes
+// autoloader). Present once the plugin's own composer deps are installed.
 if (file_exists($pluginRoot . '/vendor/autoload.php')) {
     require_once $pluginRoot . '/vendor/autoload.php';
 }
+
+// hypeFilestore() DI-container factory lives in lib/functions.php (Iron Law 5:
+// elgg-plugin.php cannot hold closures). Load it so unit tests can call it even
+// when the plugin is not marked active in the snapshot DB.
+if (file_exists($pluginRoot . '/lib/functions.php')) {
+    require_once $pluginRoot . '/lib/functions.php';
+}
+
+// Register hypeJunction\Filestore classes manually in case the plugin's own
+// vendor/autoload is absent and it is not active in the test DB.
+spl_autoload_register(function ($class) use ($pluginRoot) {
+    if (strncmp($class, 'hypeJunction\\', 13) !== 0) {
+        return;
+    }
+    $file = $pluginRoot . '/classes/' . str_replace('\\', '/', $class) . '.php';
+    if (file_exists($file)) {
+        require_once $file;
+    }
+});
+
+\Elgg\Application::loadCore();

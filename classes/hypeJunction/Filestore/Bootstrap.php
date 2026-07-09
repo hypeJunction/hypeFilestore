@@ -35,8 +35,8 @@ class Bootstrap extends DefaultPluginBootstrap {
 	 * {@inheritdoc}
 	 */
 	public function init(): void {
-		// No-op. elgg_register_css() and elgg_register_external_view() were
-		// removed in Elgg 4.x — assets at views/default/css/ and
+		// No-op. The elgg_register_css and elgg_register_external_view helpers
+		// were removed in Elgg 4.x — assets at views/default/css/ and
 		// views/default/js/ auto-discover via simplecache. Consumer plugins
 		// (hypeAttachments, hypeWall) that need cropper assets reference
 		// them directly via their own view files.

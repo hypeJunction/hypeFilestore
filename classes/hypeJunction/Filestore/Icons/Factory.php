@@ -62,7 +62,7 @@ class Factory {
 		$coords = elgg_extract('coords', $options, false);
 		$dir = $this->getIconDirectory($entity, elgg_extract('icon_filestore_prefix', $options));
 
-		$entity->icon_mimetype = \ElggFile::detectMimeType($source, 'image/jpeg');
+		$entity->icon_mimetype = _elgg_services()->mimetype->getMimeType($source, 'image/jpeg');
 		$entity->icon_directory = $dir;
 
 		// reset
@@ -234,7 +234,7 @@ class Factory {
 			$file->close();
 		}
 
-		$file->mimetype = $file->detectMimeType();
+		$file->mimetype = $file->getMimeType();
 
 		return $file;
 	}
@@ -281,7 +281,7 @@ class Factory {
 		}
 
 		$ha = elgg()->session->getDisabledEntityVisibility();
-		access_show_hidden_entities(true);
+		elgg()->session->setDisabledEntityVisibility(true);
 		$entity_guid = get_input('guid');
 		$entity = get_entity($entity_guid);
 		if (!$entity) {
@@ -303,7 +303,7 @@ class Factory {
 		}
 
 		$mimetype = ($entity->mimetype) ? $entity->mimetype : 'image/jpeg';
-		access_show_hidden_entities($ha);
+		elgg()->session->setDisabledEntityVisibility($ha);
 		header("Content-type: $mimetype");
 		header("Etag: $etag");
 		header('Expires: ' . date('r', time() + 864000));
