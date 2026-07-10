@@ -19,7 +19,7 @@ class CoverHandler extends IconHandler {
 	 * @param array      $icon_sizes An array of predefined icon sizes
 	 * @return array
 	 */
-	protected static function getIconSizes($entity, $icon_sizes = []) {
+	public static function getIconSizes($entity, $icon_sizes = []) {
 
 		$type = $entity->getType();
 		$subtype = $entity->getSubtype();
